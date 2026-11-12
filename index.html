@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI Industrial Safety｜工厂 AI 安全监控与健康管理</title>
+<style>
+:root{--navy:#102d4d;--navy2:#173c63;--blue:#1677ff;--bg:#f3f7fc;--card:#fff;--text:#17324f;--muted:#69809a;--line:#e3ebf5;--green:#16a66a;--red:#e84949;--orange:#e99a20;--purple:#6656d9;--shadow:0 5px 22px #1a47730b}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans SC","Malgun Gothic",sans-serif;background:var(--bg);color:var(--text)}button,select{font:inherit}button{cursor:pointer;border:0;border-radius:10px;padding:11px 15px;font-weight:700}button:focus-visible,select:focus-visible{outline:3px solid #8fc1ff;outline-offset:2px}.top{height:66px;background:linear-gradient(100deg,var(--navy),#163b63);color:white;display:flex;align-items:center;justify-content:space-between;padding:0 22px;gap:15px;position:sticky;top:0;z-index:5}.brand{display:flex;align-items:center;gap:12px;font-weight:800;font-size:18px}.logo{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#d5e9ff,#438df6);display:grid;place-items:center;color:#12375d;font-weight:900}.brand small{display:block;font-size:11px;color:#c4d9ee;font-weight:500;margin-top:3px}.topright{display:flex;align-items:center;gap:14px}.lang{background:transparent;color:#dcecff;padding:7px}.lang.active{background:#e5f0ff;color:#1454a0}.layout{display:grid;grid-template-columns:210px minmax(0,1fr);min-height:calc(100vh - 66px)}aside{background:var(--navy);color:#c4d7ec;padding:17px 11px;display:flex;flex-direction:column;gap:5px}.nav{width:100%;text-align:left;background:transparent;color:inherit;padding:13px;border-radius:9px;display:flex;gap:11px;align-items:center}.nav.active,.nav:hover{background:#1b4e80;color:#fff}.ces{margin-top:auto;border:1px solid #2d5e8b;border-radius:12px;padding:15px;background:linear-gradient(145deg,#173f69,#0b2441)}.ces strong{font-size:20px;color:white}.ces p{font-size:12px;line-height:1.5;color:#a9c7e6;margin-bottom:0}.main{padding:20px;min-width:0}.welcome{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:16px}.welcome h1{font-size:23px;margin:0 0 5px}.welcome p{color:var(--muted);margin:0;font-size:13px}.status-pill{display:inline-flex;align-items:center;gap:8px;border-radius:20px;padding:8px 12px;background:#e7f8ef;color:#08794a;font-size:12px;font-weight:800}.dot{width:8px;height:8px;border-radius:50%;background:currentColor}.grid{display:grid;gap:14px}.stats{grid-template-columns:repeat(4,minmax(0,1fr));margin-bottom:14px}.card{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:15px;min-width:0}.stat{display:flex;align-items:center;gap:12px}.stat-icon{width:43px;height:43px;border-radius:13px;background:#e8f2ff;color:#2676dc;display:grid;place-items:center;font-size:21px;flex-shrink:0}.stat:nth-child(2) .stat-icon{background:#fff0f0;color:var(--red)}.stat:nth-child(3) .stat-icon{background:#f0edff;color:var(--purple)}.stat label{display:block;color:var(--muted);font-size:12px}.stat strong{display:block;font-size:25px;margin-top:3px}.row-main{grid-template-columns:minmax(0,2.1fr) minmax(275px,.9fr);align-items:stretch}.section-title{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 12px;font-size:15px}.section-title small{font-size:11px;color:var(--muted);font-weight:500}.camera{background:#0d2946;border-radius:11px;overflow:hidden;color:white}.cam-head{padding:11px 14px;display:flex;justify-content:space-between;align-items:center;font-size:13px}.feed{position:relative;min-height:310px;aspect-ratio:16/8.8;background:linear-gradient(180deg,#1d3b54,#0b243b);overflow:hidden;display:grid;place-items:center}.feed:before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,#244d6b 0%,#6c8c9b 35%,#16364f 36%,#71909c 53%,#16324c 54%,#0e2b44 100%);opacity:.7}.factory-art{position:absolute;inset:0;opacity:.45;background:repeating-linear-gradient(90deg,transparent 0 10%,#c3d7e1 10.2% 10.7%,transparent 11% 19%),linear-gradient(0deg,#a2b9c2 0 5%,transparent 5% 75%,#9bb2bf 75% 77%,transparent 77%);}.lane{position:absolute;left:40%;height:120%;width:3px;background:#f5c642;transform:rotate(10deg);top:15%;box-shadow:25px 0 #f5c642}.machine{position:absolute;bottom:14%;width:17%;height:45%;background:linear-gradient(90deg,#244b69,#638394,#24435d);border:3px solid #93aaba;box-shadow:inset 0 0 0 8px #294b61}.machine.m1{left:7%}.machine.m2{right:6%;height:55%}.person{position:absolute;bottom:17%;width:42px;height:95px;border:2px solid #20d17d;border-radius:5px;display:none;background:#20d17d12}.person:before{content:"";position:absolute;top:-23px;left:9px;width:20px;height:20px;border:2px solid #20d17d;border-radius:50%;background:#1b3c50}.person span{position:absolute;top:-19px;left:-3px;background:#0d9959;padding:2px 5px;font-size:10px;border-radius:3px;white-space:nowrap}.person.p1{left:24%}.person.p2{left:47%;height:115px}.person.p3{left:68%;height:100px}.person.violation{border-color:#ff5454;background:#ff545418}.person.violation:before{border-color:#ff5454}.person.violation span{background:#c92e37}.feed.running .person{display:block}.face-box{display:none;position:absolute;right:13%;top:27%;width:48px;height:55px;border:2px solid #55a6ff;color:#cce4ff;font-size:10px}.face-box:after{content:"Face detected";position:absolute;top:-17px;left:-2px;white-space:nowrap;background:#1466bc;padding:2px 4px}.feed.running .face-box{display:block}.feed-msg{position:relative;text-align:center;color:#dceeff;font-size:13px;line-height:1.7;background:#0c2744c9;padding:14px 18px;border-radius:10px;max-width:80%;z-index:1}.feed.running .feed-msg{display:none}.cam-controls{padding:12px;display:flex;align-items:center;gap:9px;flex-wrap:wrap}.primary{background:var(--blue);color:#fff}.danger{background:#fff0f0;color:#d43e3e}.subtle{background:#eaf2fc;color:#244c78}.cam-controls select{max-width:160px;min-width:120px;background:#183e63;border:1px solid #52718e;color:#fff;border-radius:8px;padding:10px}.toggle{display:flex;align-items:center;gap:6px;font-size:11px;color:#d9e9f7;margin-left:auto}.toggle input{accent-color:#2389ff;width:17px;height:17px}.alerts{display:flex;flex-direction:column;gap:10px}.alert{display:flex;gap:10px;align-items:flex-start;padding:11px;border:1px solid var(--line);border-radius:10px}.alert-icon{font-size:18px}.alert strong{display:block;font-size:12px}.alert p{margin:4px 0 0;font-size:11px;color:var(--muted)}.red{color:var(--red)}.orange{color:var(--orange)}.green{color:var(--green)}.blue{color:var(--blue)}.lower{grid-template-columns:1.4fr 1fr 1fr;margin-top:14px}.metric-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.metric{border:1px solid var(--line);background:#fbfdff;border-radius:10px;padding:11px 8px}.metric small{display:block;color:var(--muted);font-size:11px}.metric strong{display:block;font-size:18px;margin:7px 0 3px}.metric em{font-style:normal;color:var(--green);font-size:10px}.note{font-size:11px;color:var(--muted);line-height:1.55}.chart{width:100%;height:105px;display:block;margin-top:8px}.chart path,.chart polyline{fill:none;stroke-width:2.3;stroke-linecap:round}.features{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.feature{background:#f8fbff;border:1px solid #e7eef8;border-radius:10px;padding:11px;font-size:12px;font-weight:700}.feature span{display:block;font-size:10px;font-weight:400;color:var(--muted);margin-top:5px;line-height:1.4}.device-list{display:flex;flex-direction:column;gap:9px}.device{display:flex;align-items:center;gap:10px;padding:10px;background:#f8fbff;border-radius:9px;font-size:12px}.device .state{margin-left:auto;color:var(--green);font-size:11px}.footer{padding:16px 2px;color:#7890a9;font-size:11px;display:flex;justify-content:space-between;gap:12px}.toast{position:fixed;right:20px;bottom:20px;z-index:20;background:#173c63;color:white;padding:13px 17px;border-radius:10px;box-shadow:0 10px 30px #12345635;max-width:340px;display:none;font-size:13px}.toast.show{display:block}.muted{color:var(--muted)}.section{scroll-margin-top:80px}
+@media(max-width:1100px){.layout{grid-template-columns:170px minmax(0,1fr)}.row-main{grid-template-columns:1fr}.lower{grid-template-columns:1fr 1fr}.lower .card:first-child{grid-column:1/-1}.stats{grid-template-columns:repeat(2,1fr)}.main{padding:14px}}
+@media(max-width:700px){.top{height:auto;min-height:62px;padding:10px 12px;flex-wrap:wrap}.topright{gap:3px}.brand{font-size:15px}.brand small{font-size:10px}.layout{display:block}aside{position:sticky;top:62px;z-index:4;flex-direction:row;overflow:auto;padding:6px}.nav{width:auto;white-space:nowrap;padding:9px;font-size:12px}.nav .navtext{display:inline}.ces{display:none}.main{padding:12px}.welcome{align-items:flex-start}.welcome h1{font-size:19px}.stats{gap:8px}.card{padding:12px}.stat strong{font-size:22px}.row-main{grid-template-columns:minmax(0,1fr)}.lower{grid-template-columns:1fr}.lower .card:first-child{grid-column:auto}.metric-grid{grid-template-columns:repeat(2,1fr)}.feed{min-height:230px}.toggle{margin-left:0}.footer{flex-direction:column}.lang{font-size:11px;padding:5px}}
+</style>
+
+<link rel="manifest" href="./manifest.webmanifest">
+<meta name="theme-color" content="#081827">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="icon" href="./icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="./icons/icon.svg">
+
+</head>
+<body>
+<header class="top">
+  <div class="brand"><div class="logo">AI</div><div>AI Industrial Safety<small data-i18n="subtitle">工厂 AI 安全监控与健康管理系统</small></div></div>
+  <div class="topright"><button class="lang active" data-lang="zh">中文</button><button class="lang" data-lang="en">English</button><button class="lang" data-lang="ko">한국어</button></div>
+</header>
+<div class="layout">
+<aside>
+  <button class="nav active" data-nav="home">⌂ <span class="navtext" data-i18n="home">首页</span></button>
+  <button class="nav" data-nav="monitor">▣ <span class="navtext" data-i18n="monitor">实时监控</span></button>
+  <button class="nav" data-nav="people">♙ <span class="navtext" data-i18n="people">人员管理</span></button>
+  <button class="nav" data-nav="ppe">⬡ <span class="navtext" data-i18n="ppe">PPE 检测</span></button>
+  <button class="nav" data-nav="health">♡ <span class="navtext" data-i18n="health">健康数据</span></button>
+  <button class="nav" data-nav="alerts">♧ <span class="navtext" data-i18n="alerts">告警记录</span></button>
+  <button class="nav" data-nav="devices">▤ <span class="navtext" data-i18n="devices">设备管理</span></button>
+  <button class="nav" data-nav="settings">⚙ <span class="navtext" data-i18n="settings">系统设置</span></button>
+  <button class="nav" data-nav="validation">✓ <span class="navtext">测试验证</span></button>
+  <div class="ces"><strong>CES 2028</strong><p>Smarter Safety,<br>Healthier Workplaces</p><p data-i18n="edge">边缘 AI · 本地优先 · 多设备接入</p></div>
+</aside>
+<main class="main">
+  <div class="welcome"><div><h1 data-i18n="title">工厂 AI 安全监控与健康管理</h1><p data-i18n="intro">实时视觉检测、人员追踪、PPE 检查与可穿戴设备数据整合</p></div><div class="status-pill"><span class="dot"></span><span id="sysstatus" data-i18n="standby">系统待启动</span></div></div>
+  <section class="grid stats section" id="home">
+    <div class="card stat"><div class="stat-icon">♙</div><div><label data-i18n="workers">当前检测人数</label><strong id="workerCount">—</strong></div></div>
+    <div class="card stat"><div class="stat-icon">⚠</div><div><label data-i18n="violations">安全违规事件</label><strong id="violationCount">—</strong></div></div>
+    <div class="card stat"><div class="stat-icon">◎</div><div><label data-i18n="faces">人脸检测框</label><strong id="faceCount">—</strong></div></div>
+    <div class="card stat"><div class="stat-icon">◷</div><div><label data-i18n="uptime">本次运行时长</label><strong id="uptime">00:00</strong></div></div>
+  </section>
+  <div class="grid row-main">
+    <section class="card section" id="monitor">
+      <div class="section-title"><span data-i18n="live">实时监控画面</span><small id="camState">● <span data-i18n="notConnected">摄像头未连接</span></small></div>
+      <div class="camera">
+        <div class="cam-head"><strong data-i18n="cameraFeed">摄像头预览 / 检测叠加层</strong><span id="modelState">YOLO · Standby</span></div>
+        <div class="feed" id="feed"><div class="factory-art"></div><div class="lane"></div><div class="machine m1"></div><div class="machine m2"></div>
+          <div class="person p1"><span>ID: 01 · PPE OK</span></div><div class="person p2"><span>ID: 02 · PPE OK</span></div><div class="person p3 violation"><span>ID: 03 · PPE CHECK</span></div><div class="face-box"></div>
+          <div class="feed-msg" id="feedMsg">▶<br><strong data-i18n="ready">准备启动安全监控</strong><br><span data-i18n="demoHint">点击“启动演示”运行模拟界面。连接真实摄像头和模型需完成设备配置。</span></div>
+        </div>
+        <div class="cam-controls"><button class="primary" id="startBtn">▶ <span data-i18n="startDemo">启动演示</span></button><button class="danger" id="stopBtn" disabled>■ <span data-i18n="stop">停止</span></button>
+          <select id="cameraSelect" aria-label="Camera"><option value="demo" data-i18n="demoCamera">模拟摄像头（演示）</option><option value="real" data-i18n="realCamera">本机摄像头（需要 HTTPS/localhost）</option></select>
+          <label class="toggle"><input type="checkbox" id="yoloToggle" checked> YOLO</label><label class="toggle"><input type="checkbox" id="trackToggle" checked><span data-i18n="tracking">人员追踪</span></label><label class="toggle"><input type="checkbox" id="ppeToggle" checked> PPE</label><label class="toggle"><input type="checkbox" id="faceToggle" checked><span data-i18n="faceDetect">人脸检测框</span></label>
+        </div>
+      </div>
+      <p class="note" data-i18n="demoDisclaimer">演示模式仅模拟检测结果，不会运行真实 YOLO 或 MediaPipe 模型。人脸功能默认仅检测位置，不进行身份识别。</p>
+    </section>
+    <section class="card section" id="alerts">
+      <div class="section-title"><span data-i18n="alertTitle">实时告警</span><button class="subtle" id="clearAlerts" data-i18n="clear">清除演示告警</button></div>
+      <div class="alerts" id="alertList">
+        <div class="alert"><span class="alert-icon red">●</span><div><strong class="red" data-i18n="alertSample">示例：安全帽未检测到</strong><p>ID: 03 · <span data-i18n="sampleOnly">模拟事件，非真实检测</span></p></div></div>
+        <div class="alert"><span class="alert-icon orange">▲</span><div><strong class="orange" data-i18n="alertZone">示例：人员接近危险区域</strong><p>ID: 07 · <span data-i18n="sampleOnly">模拟事件，非真实检测</span></p></div></div>
+        <div class="alert"><span class="alert-icon blue">ⓘ</span><div><strong class="blue" data-i18n="alertDevice">设备数据尚未接入</strong><p data-i18n="alertDeviceHint">连接手表或传感器后显示有效数据状态</p></div></div>
+      </div>
+    </section>
+  </div>
+  <div class="grid lower">
+    <section class="card section" id="health">
+      <div class="section-title"><span data-i18n="wearable">智能手表 / 生理数据</span><small id="wearableStatus" data-i18n="notConnected">尚未连接</small></div>
+      <div class="metric-grid">
+        <div class="metric"><small data-i18n="bp">血压</small><strong id="bp">—</strong><em data-i18n="noData">暂无数据</em></div>
+        <div class="metric"><small data-i18n="temp">体温 / 皮肤温度</small><strong id="temp">—</strong><em data-i18n="noData">暂无数据</em></div>
+        <div class="metric"><small data-i18n="hr">心率</small><strong id="hr">—</strong><em data-i18n="noData">暂无数据</em></div>
+        <div class="metric"><small data-i18n="spo2">血氧</small><strong id="spo2">—</strong><em data-i18n="noData">暂无数据</em></div>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:11px"><button class="subtle" id="simulateVitals" data-i18n="simulateVitals">载入模拟数据</button><button class="subtle" id="resetVitals" data-i18n="resetVitals">清除数据</button></div>
+      <p class="note" data-i18n="healthNote">模拟数据仅用于界面测试，不是真实测量值或医疗建议。真实数据需由兼容设备通过厂商 SDK、授权健康平台或网关接入；不得伪造缺失值。</p>
+    </section>
+    <section class="card section" id="ppe">
+      <div class="section-title"><span data-i18n="analysis">AI 视觉分析</span><small data-i18n="demoData">演示数据</small></div>
+      <div style="display:flex;align-items:center;gap:18px">
+        <div style="width:92px;height:92px;border-radius:50%;background:conic-gradient(#16a66a 0 92%,#e8edf4 92%);display:grid;place-items:center;flex-shrink:0"><div style="width:68px;height:68px;background:white;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:20px" id="ppeScore">—</div></div>
+        <div class="note"><div>🟢 <span data-i18n="ppeOk">PPE 正常</span>: <b id="ppeOkCount">—</b></div><div style="margin-top:8px">🔴 <span data-i18n="ppeRisk">需复核</span>: <b id="ppeRiskCount">—</b></div><div style="margin-top:8px">🔵 <span data-i18n="other">其他</span>: 0</div></div>
+      </div>
+      <hr style="border:0;border-top:1px solid var(--line);margin:14px 0">
+      <div class="section-title"><span data-i18n="edgeTitle">边缘设备状态</span></div>
+      <div class="device-list"><div class="device">▣ <span data-i18n="camera">摄像头</span><span class="state" id="cameraDeviceState" data-i18n="offline">未连接</span></div><div class="device">▤ <span data-i18n="edgeComputer">Edge Computer</span><span class="state" data-i18n="localOnly">本地演示</span></div><div class="device">⌚ <span data-i18n="watch">智能手表 / 传感器</span><span class="state" id="watchState" data-i18n="offline">未连接</span></div></div>
+    </section>
+    <section class="card section" id="devices">
+      <div class="section-title"><span data-i18n="systemFunctions">系统功能</span></div>
+      <div class="features">
+        <div class="feature">▶ <span data-i18n="oneClick">一键启动</span><span data-i18n="oneClickHint">启动流程与状态反馈</span></div>
+        <div class="feature">⬡ <span data-i18n="ppeCheck">PPE 检查</span><span data-i18n="ppeHint">安全帽、反光背心等类别</span></div>
+        <div class="feature">♙ <span data-i18n="workerTracking">人员追踪</span><span data-i18n="trackHint">临时 ID 与移动轨迹</span></div>
+        <div class="feature">♡ <span data-i18n="vitals">生理数据接入</span><span data-i18n="vitalsHint">血压、温度、心率、血氧</span></div>
+        <div class="feature">⚠ <span data-i18n="smartAlerts">智能告警</span><span data-i18n="alertHint">违规、异常与设备故障</span></div>
+        <div class="feature">▤ <span data-i18n="audit">数据记录</span><span data-i18n="auditHint">事件日志、模型版本、审计</span></div>
+      </div>
+    </section>
+  </div>
+  <section class="card section" id="people" style="margin-top:14px">
+    <div class="section-title"><span data-i18n="releaseTitle">CES 2028 发布准备与验证</span><small data-i18n="planOnly">计划清单 · 未代表已通过</small></div>
+    <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:9px">
+      <label class="device"><input type="checkbox"> <span data-i18n="test1">一键启动/停止自动化测试</span></label>
+      <label class="device"><input type="checkbox"> <span data-i18n="test2">人工标注视频交叉验证</span></label>
+      <label class="device"><input type="checkbox"> <span data-i18n="test3">断网、断连与重启测试</span></label>
+      <label class="device"><input type="checkbox"> <span data-i18n="test4">生理数据来源与单位校验</span></label>
+      <label class="device"><input type="checkbox"> <span data-i18n="test5">权限、加密与审计检查</span></label>
+      <label class="device"><input type="checkbox"> <span data-i18n="test6">目标硬件性能与延迟测试</span></label>
+    </div>
+    <p class="note" data-i18n="releaseNote">发布门槛需结合目标硬件、工厂风险和适用法规确定。模拟测试不能替代现场验证；在完成验证前，不得宣称达到发布标准或具备医疗诊断能力。</p>
+  </section>
+  <section class="card section" id="validation" style="margin-top:14px">
+    <div class="section-title"><span data-i18n="validationTitle">内部模拟与交叉验证实验室</span><small>QA · Test bench</small></div>
+    <p class="note" data-i18n="validationIntro">在发布前运行可重复的前端检查。以下测试只验证原型状态与数据流程，不等同于真实模型准确率或现场安全认证。</p>
+    <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px">
+      <div class="feature">🧪 <span data-i18n="testHarness">自动化检查</span><span data-i18n="testHarnessHint">按钮状态、缺失值、单位、时间戳与重复事件</span></div>
+      <div class="feature">🔁 <span data-i18n="crossCheck">交叉验证</span><span data-i18n="crossCheckHint">预期值与实际值逐项比对，输出通过/失败</span></div>
+      <div class="feature">📡 <span data-i18n="edgeTransfer">边缘数据传输</span><span data-i18n="edgeTransferHint">将模拟生理数据发送至本地 Edge API</span></div>
+      <div class="feature">🛡️ <span data-i18n="failSafe">故障检查</span><span data-i18n="failSafeHint">Edge 离线、数据过期或无来源时不伪报成功</span></div>
+    </div>
+    <div style="display:flex;gap:9px;flex-wrap:wrap;margin:13px 0">
+      <button class="primary" id="runQaBtn">▶ <span data-i18n="runQa">运行内部检查</span></button>
+      <button class="subtle" id="sendEdgeBtn">⇧ <span data-i18n="sendEdge">发送模拟数据到 Edge</span></button>
+      <button class="subtle" id="checkEdgeBtn">◎ <span data-i18n="checkEdge">检查 Edge 连接</span></button>
+    </div>
+    <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-bottom:12px">
+      <div class="metric"><small data-i18n="qaResult">自动检查结果</small><strong id="qaSummary">尚未运行</strong><em id="qaSub">—</em></div>
+      <div class="metric"><small data-i18n="edgeResult">Edge API 状态</small><strong id="edgeSummary">未检查</strong><em id="edgeSub">http://127.0.0.1:8765</em></div>
+      <div class="metric"><small data-i18n="lastTransfer">最近一次传输</small><strong id="transferSummary">未发送</strong><em id="transferSub">—</em></div>
+    </div>
+    <div id="qaResults" style="display:flex;flex-direction:column;gap:7px" aria-live="polite">
+      <div class="alert"><span class="alert-icon blue">ⓘ</span><div><strong data-i18n="qaPending">等待测试</strong><p data-i18n="qaPendingHint">点击“运行内部检查”查看每项结果。</p></div></div>
+    </div>
+    <p class="note" data-i18n="edgeDisclaimer">Edge API 是本地开发演示服务。默认只绑定 127.0.0.1，不应直接暴露到公网。生产环境需要认证、TLS、访问控制、加密存储、审计和隐私评估。</p>
+  </section>
+
+
+
+  <div class="footer"><span>AI Industrial Safety · YOLO / MediaPipe integration-ready UI · Edge-first architecture</span><span>CES 2028 concept prototype · <span data-i18n="footerNote">演示原型，尚未连接真实 AI 模型或可穿戴设备</span></span></div>
+</main>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script>
+const translations={
+zh:{subtitle:"工厂 AI 安全监控与健康管理系统",home:"首页",monitor:"实时监控",people:"人员管理",ppe:"PPE 检测",health:"健康数据",alerts:"告警记录",devices:"设备管理",settings:"系统设置",edge:"边缘 AI · 本地优先 · 多设备接入",title:"工厂 AI 安全监控与健康管理",intro:"实时视觉检测、人员追踪、PPE 检查与可穿戴设备数据整合",standby:"系统待启动",running:"演示运行中",workers:"当前检测人数",violations:"安全违规事件",faces:"人脸检测框",uptime:"本次运行时长",live:"实时监控画面",notConnected:"摄像头未连接",cameraFeed:"摄像头预览 / 检测叠加层",ready:"准备启动安全监控",demoHint:"点击“启动演示”运行模拟界面。连接真实摄像头和模型需完成设备配置。",startDemo:"启动演示",startReal:"启动摄像头",stop:"停止",demoCamera:"模拟摄像头（演示）",realCamera:"本机摄像头（需要 HTTPS/localhost）",tracking:"人员追踪",faceDetect:"人脸检测框",demoDisclaimer:"演示模式仅模拟检测结果，不会运行真实 YOLO 或 MediaPipe 模型。人脸功能默认仅检测位置，不进行身份识别。",alertTitle:"实时告警",clear:"清除演示告警",alertSample:"示例：安全帽未检测到",sampleOnly:"模拟事件，非真实检测",alertZone:"示例：人员接近危险区域",alertDevice:"设备数据尚未接入",alertDeviceHint:"连接手表或传感器后显示有效数据状态",wearable:"智能手表 / 生理数据",bp:"血压",temp:"体温 / 皮肤温度",hr:"心率",spo2:"血氧",noData:"暂无数据",simulateVitals:"载入模拟数据",resetVitals:"清除数据",healthNote:"模拟数据仅用于界面测试，不是真实测量值或医疗建议。真实数据需由兼容设备通过厂商 SDK、授权健康平台或网关接入；不得伪造缺失值。",analysis:"AI 视觉分析",demoData:"演示数据",ppeOk:"PPE 正常",ppeRisk:"需复核",other:"其他",edgeTitle:"边缘设备状态",camera:"摄像头",offline:"未连接",edgeComputer:"边缘计算设备",localOnly:"本地演示",watch:"智能手表 / 传感器",systemFunctions:"系统功能",oneClick:"一键启动",oneClickHint:"启动流程与状态反馈",ppeCheck:"PPE 检查",ppeHint:"安全帽、反光背心等类别",workerTracking:"人员追踪",trackHint:"临时 ID 与移动轨迹",vitals:"生理数据接入",vitalsHint:"血压、温度、心率、血氧",smartAlerts:"智能告警",alertHint:"违规、异常与设备故障",audit:"数据记录",auditHint:"事件日志、模型版本、审计",releaseTitle:"CES 2028 发布准备与验证",planOnly:"计划清单 · 未代表已通过",test1:"一键启动/停止自动化测试",test2:"人工标注视频交叉验证",test3:"断网、断连与重启测试",test4:"生理数据来源与单位校验",test5:"权限、加密与审计检查",test6:"目标硬件性能与延迟测试",releaseNote:"发布门槛需结合目标硬件、工厂风险和适用法规确定。模拟测试不能替代现场验证；在完成验证前，不得宣称达到发布标准或具备医疗诊断能力。",footerNote:"演示原型，尚未连接真实 AI 模型或可穿戴设备",cameraOn:"摄像头已连接",cameraFailed:"摄像头访问失败：请使用 HTTPS/localhost 并允许权限",needHttps:"浏览器摄像头通常要求 HTTPS 或 localhost。请选择模拟演示，或通过安全来源访问。",started:"演示已启动。当前为模拟检测，尚未加载真实 YOLO/MediaPipe 模型。",stopped:"监控已停止",vitalsLoaded:"已载入模拟生理数据，仅供界面测试",vitalsCleared:"生理数据已清除",alertsCleared:"演示告警已清除",realNotImplemented:"摄像头已开启，但真实 YOLO/MediaPipe 模型尚未接入；当前不显示真实检测结果。",camOn:"摄像头已打开",cameraStart:"启动摄像头",camUnavailable:"无法访问摄像头，请检查权限和 HTTPS/localhost。",validationTitle:"内部模拟与交叉验证实验室",validationIntro:"在发布前运行可重复的前端检查。以下测试只验证原型状态与数据流程，不等同于真实模型准确率或现场安全认证。",testHarness:"自动化检查",testHarnessHint:"按钮状态、缺失值、单位、时间戳与重复事件",crossCheck:"交叉验证",crossCheckHint:"预期值与实际值逐项比对，输出通过/失败",edgeTransfer:"边缘数据传输",edgeTransferHint:"将模拟生理数据发送至本地 Edge API",failSafe:"故障检查",failSafeHint:"Edge 离线、数据过期或无来源时不伪报成功",runQa:"运行内部检查",sendEdge:"发送模拟数据到 Edge",checkEdge:"检查 Edge 连接",qaResult:"自动检查结果",edgeResult:"Edge API 状态",lastTransfer:"最近一次传输",qaPending:"等待测试",qaPendingHint:"点击“运行内部检查”查看每项结果。",edgeDisclaimer:"Edge API 是本地开发演示服务。默认只绑定 127.0.0.1，不应直接暴露到公网。生产环境需要认证、TLS、访问控制、加密存储、审计和隐私评估。",qaPassed:"项通过",qaFailed:"项失败",edgeOnline:"已连接",edgeOffline:"未连接",transferOk:"传输成功",transferFail:"传输失败",sampleDataSent:"已发送模拟数据（非真实测量）"},
+en:{subtitle:"Factory AI Safety Monitoring & Health Management",home:"Home",monitor:"Live monitoring",people:"People",ppe:"PPE detection",health:"Health data",alerts:"Alert log",devices:"Device management",settings:"Settings",edge:"Edge AI · Local-first · Multi-device",title:"Factory AI Safety & Health Management",intro:"Live vision, worker tracking, PPE checks and wearable data integration",standby:"System standby",running:"Demo running",workers:"People detected",violations:"Safety violations",faces:"Face detection boxes",uptime:"Session duration",live:"Live monitoring",notConnected:"Camera not connected",cameraFeed:"Camera preview / detection overlay",ready:"Ready to start safety monitoring",demoHint:"Select Start Demo to run the simulated interface. Real camera/model integration requires device configuration.",startDemo:"Start demo",startReal:"Start camera",stop:"Stop",demoCamera:"Simulated camera (demo)",realCamera:"Local camera (HTTPS/localhost)",tracking:"Person tracking",faceDetect:"Face detection",demoDisclaimer:"Demo mode simulates results and does not run a real YOLO or MediaPipe model. Face functionality detects face locations only, not identities.",alertTitle:"Live alerts",clear:"Clear demo alerts",alertSample:"Example: hard hat not detected",sampleOnly:"Simulated event, not a real detection",alertZone:"Example: person near a hazard zone",alertDevice:"Wearable data not connected",alertDeviceHint:"Valid data status appears after connecting a watch or sensor",wearable:"Smartwatch / physiological data",bp:"Blood pressure",temp:"Body / skin temperature",hr:"Heart rate",spo2:"SpO₂",noData:"No data",simulateVitals:"Load demo data",resetVitals:"Clear data",healthNote:"Demo values are for UI testing only—not real measurements or medical advice. Real data must come from compatible devices through vendor SDKs, authorized health platforms or a gateway. Never fabricate missing values.",analysis:"AI vision analytics",demoData:"Demo data",ppeOk:"PPE OK",ppeRisk:"Needs review",other:"Other",edgeTitle:"Edge device status",camera:"Camera",offline:"Disconnected",edgeComputer:"Edge computer",localOnly:"Local demo",watch:"Smartwatch / sensor",systemFunctions:"System functions",oneClick:"One-click start",oneClickHint:"Startup flow and status feedback",ppeCheck:"PPE checks",ppeHint:"Hard hats, reflective vests, etc.",workerTracking:"Worker tracking",trackHint:"Temporary IDs and movement tracks",vitals:"Physiological data",vitalsHint:"Blood pressure, temperature, heart rate, SpO₂",smartAlerts:"Smart alerts",alertHint:"Violations, anomalies and device faults",audit:"Event records",auditHint:"Event logs, model versions and audit",releaseTitle:"CES 2028 release readiness",planOnly:"Checklist · not evidence of passing",test1:"Automated start/stop tests",test2:"Cross-validation against annotated video",test3:"Network, disconnect and restart tests",test4:"Validate vital-data source and units",test5:"Access, encryption and audit review",test6:"Target-hardware performance and latency",releaseNote:"Release gates depend on target hardware, factory risks and applicable regulations. Simulation cannot replace on-site validation. Do not claim release readiness or medical diagnostic capability before validation.",footerNote:"Demo prototype; real AI models and wearables are not connected",cameraOn:"Camera connected",cameraFailed:"Camera access failed: use HTTPS/localhost and allow permission",needHttps:"Browsers generally require HTTPS or localhost for camera access. Use the demo or open from a secure origin.",started:"Demo started. Detection is simulated; no real YOLO/MediaPipe model is loaded.",stopped:"Monitoring stopped",vitalsLoaded:"Demo vitals loaded for UI testing only",vitalsCleared:"Vitals cleared",alertsCleared:"Demo alerts cleared",realNotImplemented:"Camera is on, but real YOLO/MediaPipe models are not integrated; no real detections are shown.",camOn:"Camera opened",cameraStart:"Start camera",camUnavailable:"Could not access camera. Check permission and HTTPS/localhost.",validationTitle:"Internal simulation & cross-validation lab",validationIntro:"Run repeatable pre-release checks. These tests validate prototype state and data flow only; they do not prove model accuracy or certify site safety.",testHarness:"Automated checks",testHarnessHint:"Button state, missing values, units, timestamps and duplicate events",crossCheck:"Cross-validation",crossCheckHint:"Compare expected and actual values item by item",edgeTransfer:"Edge data transfer",edgeTransferHint:"Send simulated vital data to the local Edge API",failSafe:"Failure handling",failSafeHint:"Do not claim success when Edge is offline or data is stale/unsourced",runQa:"Run internal checks",sendEdge:"Send demo data to Edge",checkEdge:"Check Edge connection",qaResult:"Automated check result",edgeResult:"Edge API status",lastTransfer:"Last transfer",qaPending:"Tests not run",qaPendingHint:"Click Run internal checks to see individual results.",edgeDisclaimer:"The Edge API is a local development demo bound to 127.0.0.1 by default. Do not expose it publicly. Production requires authentication, TLS, access control, encrypted storage, audit and privacy review.",qaPassed:"passed",qaFailed:"failed",edgeOnline:"Connected",edgeOffline:"Not connected",transferOk:"Transfer succeeded",transferFail:"Transfer failed",sampleDataSent:"Demo data sent (not a real measurement)"},
+ko:{subtitle:"공장 AI 안전 모니터링 및 건강 관리 시스템",home:"홈",monitor:"실시간 모니터링",people:"작업자 관리",ppe:"PPE 감지",health:"건강 데이터",alerts:"경보 기록",devices:"장치 관리",settings:"설정",edge:"엣지 AI · 로컬 우선 · 다중 장치",title:"공장 AI 안전 및 건강 관리",intro:"실시간 영상 감지, 작업자 추적, PPE 점검 및 웨어러블 데이터 통합",standby:"시스템 대기 중",running:"데모 실행 중",workers:"감지 인원",violations:"안전 위반",faces:"얼굴 감지 박스",uptime:"실행 시간",live:"실시간 모니터링",notConnected:"카메라 연결 안 됨",cameraFeed:"카메라 미리보기 / 감지 오버레이",ready:"안전 모니터링 시작 준비",demoHint:"데모 시작을 눌러 시뮬레이션 화면을 실행하세요. 실제 카메라와 모델 연결에는 장치 설정이 필요합니다.",startDemo:"데모 시작",startReal:"카메라 시작",stop:"중지",demoCamera:"시뮬레이션 카메라(데모)",realCamera:"로컬 카메라(HTTPS/localhost)",tracking:"작업자 추적",faceDetect:"얼굴 감지",demoDisclaimer:"데모 모드는 결과를 시뮬레이션하며 실제 YOLO 또는 MediaPipe 모델을 실행하지 않습니다. 얼굴 기능은 신원 확인 없이 위치만 감지합니다.",alertTitle:"실시간 경보",clear:"데모 경보 지우기",alertSample:"예시: 안전모 미감지",sampleOnly:"시뮬레이션 이벤트, 실제 감지 아님",alertZone:"예시: 작업자가 위험 구역에 접근",alertDevice:"웨어러블 데이터 미연결",alertDeviceHint:"시계 또는 센서 연결 후 데이터 상태 표시",wearable:"스마트워치 / 생체 데이터",bp:"혈압",temp:"체온 / 피부 온도",hr:"심박수",spo2:"산소포화도",noData:"데이터 없음",simulateVitals:"데모 데이터 불러오기",resetVitals:"데이터 지우기",healthNote:"데모 값은 UI 테스트 전용이며 실제 측정값이나 의료 조언이 아닙니다. 실제 데이터는 호환 장치의 제조사 SDK, 승인된 건강 플랫폼 또는 게이트웨이를 통해 받아야 합니다. 누락값을 임의로 만들지 마세요.",analysis:"AI 영상 분석",demoData:"데모 데이터",ppeOk:"PPE 정상",ppeRisk:"확인 필요",other:"기타",edgeTitle:"엣지 장치 상태",camera:"카메라",offline:"연결 안 됨",edgeComputer:"엣지 컴퓨터",localOnly:"로컬 데모",watch:"스마트워치 / 센서",systemFunctions:"시스템 기능",oneClick:"원클릭 시작",oneClickHint:"시작 절차 및 상태 표시",ppeCheck:"PPE 점검",ppeHint:"안전모, 반사 조끼 등",workerTracking:"작업자 추적",trackHint:"임시 ID 및 이동 경로",vitals:"생체 데이터 연동",vitalsHint:"혈압, 온도, 심박수, SpO₂",smartAlerts:"스마트 경보",alertHint:"위반, 이상 및 장치 오류",audit:"이벤트 기록",auditHint:"로그, 모델 버전 및 감사",releaseTitle:"CES 2028 출시 준비 및 검증",planOnly:"체크리스트 · 통과 증거 아님",test1:"시작/중지 자동화 테스트",test2:"주석 처리된 영상과 교차 검증",test3:"네트워크·연결 해제·재시작 테스트",test4:"생체 데이터 출처 및 단위 검증",test5:"권한·암호화·감사 검토",test6:"목표 하드웨어 성능 및 지연 테스트",releaseNote:"출시 기준은 목표 하드웨어, 공장 위험 및 적용 규정에 따라 정해야 합니다. 시뮬레이션은 현장 검증을 대체하지 않습니다. 검증 전에는 출시 준비 완료 또는 의료 진단 기능을 주장하지 마세요.",footerNote:"데모 프로토타입이며 실제 AI 모델과 웨어러블은 연결되지 않음",cameraOn:"카메라 연결됨",cameraFailed:"카메라 접근 실패: HTTPS/localhost 및 권한을 확인하세요",needHttps:"브라우저 카메라는 일반적으로 HTTPS 또는 localhost가 필요합니다. 데모를 사용하거나 보안 출처에서 여세요.",started:"데모가 시작되었습니다. 감지는 시뮬레이션이며 실제 YOLO/MediaPipe 모델은 로드되지 않았습니다.",stopped:"모니터링 중지됨",vitalsLoaded:"UI 테스트용 데모 생체 데이터를 불러왔습니다",vitalsCleared:"생체 데이터 삭제됨",alertsCleared:"데모 경보 삭제됨",realNotImplemented:"카메라는 켜졌지만 실제 YOLO/MediaPipe 모델은 통합되지 않았습니다. 실제 감지 결과는 표시되지 않습니다.",camOn:"카메라 열림",cameraStart:"카메라 시작",camUnavailable:"카메라에 접근할 수 없습니다. 권한과 HTTPS/localhost를 확인하세요.",validationTitle:"내부 시뮬레이션 및 교차 검증 실험실",validationIntro:"출시 전 반복 가능한 검사를 실행합니다. 이 검사는 프로토타입 상태와 데이터 흐름만 확인하며 실제 모델 정확도나 현장 안전 인증을 증명하지 않습니다.",testHarness:"자동화 검사",testHarnessHint:"버튼 상태, 누락값, 단위, 타임스탬프 및 중복 이벤트",crossCheck:"교차 검증",crossCheckHint:"예상값과 실제값을 항목별로 비교",edgeTransfer:"엣지 데이터 전송",edgeTransferHint:"시뮬레이션 생체 데이터를 로컬 Edge API로 전송",failSafe:"장애 처리",failSafeHint:"엣지 오프라인, 오래된 데이터 또는 출처 누락 시 성공으로 표시하지 않음",runQa:"내부 검사 실행",sendEdge:"데모 데이터를 엣지로 전송",checkEdge:"엣지 연결 확인",qaResult:"자동 검사 결과",edgeResult:"Edge API 상태",lastTransfer:"최근 전송",qaPending:"검사 전",qaPendingHint:"내부 검사 실행을 눌러 항목별 결과를 확인하세요.",edgeDisclaimer:"Edge API는 로컬 개발 데모이며 기본적으로 127.0.0.1에만 바인딩됩니다. 공개 인터넷에 노출하지 마세요. 운영 환경에는 인증, TLS, 접근 제어, 암호화 저장, 감사 및 개인정보 검토가 필요합니다.",qaPassed:"개 통과",qaFailed:"개 실패",edgeOnline:"연결됨",edgeOffline:"미연결",transferOk:"전송 성공",transferFail:"전송 실패",sampleDataSent:"데모 데이터 전송됨(실제 측정값 아님)"}
+};
+let lang='zh',running=false,startTime=0,timer=null,stream=null;
+const $=id=>document.getElementById(id);
+function tr(key){return (translations[lang]&&translations[lang][key])||translations.zh[key]||key}
+function toast(msg){const t=$('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove('show'),3800)}
+function setLang(l){lang=l;document.documentElement.lang=l==='zh'?'zh-CN':l;document.querySelectorAll('[data-i18n]').forEach(el=>{const k=el.dataset.i18n;if(translations[l][k])el.textContent=translations[l][k]});document.querySelectorAll('[data-lang]').forEach(b=>b.classList.toggle('active',b.dataset.lang===l));$('startBtn').querySelector('span').textContent=tr($('cameraSelect').value==='real'?'startReal':'startDemo')}
+document.querySelectorAll('[data-lang]').forEach(b=>b.addEventListener('click',()=>setLang(b.dataset.lang)));
+document.querySelectorAll('[data-nav]').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('[data-nav]').forEach(n=>n.classList.remove('active'));b.classList.add('active');const target=b.dataset.nav;const el=document.getElementById(target);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});else toast(tr('settings')+' · '+(lang==='zh'?'设置区域将在后续版本扩展':lang==='ko'?'설정 영역은 후속 버전에서 확장됩니다':'Settings section can be expanded in a later version'))}));
+$('cameraSelect').addEventListener('change',()=>{$('startBtn').querySelector('span').textContent=tr($('cameraSelect').value==='real'?'startReal':'startDemo')});
+function runDemo(){running=true;startTime=Date.now();$('feed').classList.add('running');$('sysstatus').textContent=tr('running');$('camState').textContent='● '+tr('running');$('modelState').textContent='SIMULATION · YOLO mock';$('workerCount').textContent='3';$('violationCount').textContent=$('ppeToggle').checked?'1':'0';$('faceCount').textContent=$('faceToggle').checked?'1':'0';$('ppeScore').textContent=$('ppeToggle').checked?'67%':'—';$('ppeOkCount').textContent=$('ppeToggle').checked?'2':'—';$('ppeRiskCount').textContent=$('ppeToggle').checked?'1':'—';$('cameraDeviceState').textContent=tr('running');$('startBtn').disabled=true;$('stopBtn').disabled=false;timer=setInterval(()=>{const s=Math.floor((Date.now()-startTime)/1000);$('uptime').textContent=String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')},1000);toast(tr('started'))}
+function stop(){running=false;clearInterval(timer);$('feed').classList.remove('running');$('sysstatus').textContent=tr('standby');$('camState').textContent='● '+tr('notConnected');$('modelState').textContent='YOLO · Standby';$('workerCount').textContent='—';$('violationCount').textContent='—';$('faceCount').textContent='—';$('uptime').textContent='00:00';$('ppeScore').textContent='—';$('ppeOkCount').textContent='—';$('ppeRiskCount').textContent='—';$('cameraDeviceState').textContent=tr('offline');$('startBtn').disabled=false;$('stopBtn').disabled=true;toast(tr('stopped'))}
+$('startBtn').addEventListener('click',async()=>{if($('cameraSelect').value==='real'){if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){toast(tr('needHttps'));return}try{stream=await navigator.mediaDevices.getUserMedia({video:true,audio:false});const video=document.createElement('video');video.autoplay=true;video.muted=true;video.playsInline=true;video.srcObject=stream;video.style.cssText='position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0';$('feed').prepend(video);$('feed').querySelector('.feed-msg').style.display='none';$('sysstatus').textContent=tr('cameraOn');$('camState').textContent='● '+tr('cameraOn');$('cameraDeviceState').textContent=tr('cameraOn');$('startBtn').disabled=true;$('stopBtn').disabled=false;toast(tr('realNotImplemented'));running=true;startTime=Date.now();timer=setInterval(()=>{const s=Math.floor((Date.now()-startTime)/1000);$('uptime').textContent=String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')},1000)}catch(e){toast(tr('cameraFailed'))}}else runDemo()});
+$('stopBtn').addEventListener('click',()=>{if(stream){stream.getTracks().forEach(t=>t.stop());stream=null;const v=$('feed').querySelector('video');if(v)v.remove();$('feed').querySelector('.feed-msg').style.display='block'}stop()});
+$('simulateVitals').addEventListener('click',()=>{$('bp').textContent='118/76';$('temp').textContent='36.5 °C';$('hr').textContent='72 bpm';$('spo2').textContent='98%';$('wearableStatus').textContent=lang==='zh'?'模拟数据（非设备）':lang==='ko'?'데모 데이터(장치 아님)':'Demo data (not device)';$('watchState').textContent=lang==='zh'?'模拟数据':lang==='ko'?'데모 데이터':'Demo data';toast(tr('vitalsLoaded'))});
+$('resetVitals').addEventListener('click',()=>{['bp','temp','hr','spo2'].forEach(id=>$(id).textContent='—');$('wearableStatus').textContent=tr('notConnected');$('watchState').textContent=tr('offline');toast(tr('vitalsCleared'))});
+$('clearAlerts').addEventListener('click',()=>{$('alertList').innerHTML='<div class="alert"><span class="alert-icon blue">ⓘ</span><div><strong class="blue">'+tr('alertsCleared')+'</strong><p>'+tr('sampleOnly')+'</p></div></div>';toast(tr('alertsCleared'))});
+$('trackToggle').addEventListener('change',e=>{$('feed').querySelectorAll('.person').forEach(p=>p.style.display=running&&e.target.checked?'block':'')});
+$('faceToggle').addEventListener('change',e=>{$('faceCount').textContent=running&&e.target.checked?'1':running?'0':'—';$('feed').querySelector('.face-box').style.display=running&&e.target.checked?'block':''});
+$('ppeToggle').addEventListener('change',e=>{if(running){$('violationCount').textContent=e.target.checked?'1':'0';$('ppeScore').textContent=e.target.checked?'67%':'—'}});
+const EDGE_BASE = 'http://127.0.0.1:8765';
+function renderQa(results){
+  const passed=results.filter(x=>x.ok).length, failed=results.length-passed;
+  $('qaSummary').textContent=passed+'/'+results.length;
+  $('qaSub').textContent=failed===0?tr('qaPassed'):(failed+' '+tr('qaFailed'));
+  $('qaResults').innerHTML='';
+  results.forEach(r=>{
+    const item=document.createElement('div');item.className='alert';
+    const icon=document.createElement('span');icon.className='alert-icon '+(r.ok?'green':'red');icon.textContent=r.ok?'✓':'✕';
+    const body=document.createElement('div');const title=document.createElement('strong');title.className=r.ok?'green':'red';title.textContent=r.name;
+    const desc=document.createElement('p');desc.textContent=r.detail;
+    body.append(title,desc);item.append(icon,body);$('qaResults').append(item);
+  });
+}
+$('runQaBtn')?.addEventListener('click',()=>{
+  const results=[];
+  const add=(name,ok,detail)=>results.push({name,ok,detail});
+  add('Required controls exist',!!$('startBtn')&&!!$('stopBtn')&&!!$('simulateVitals'),'Start/stop and vitals controls are present.');
+  add('Vitals do not invent data by default',['bp','temp','hr','spo2'].every(id=>$ (id).textContent==='—'),'Empty-state values are blank until the demo-data action is used.');
+  add('Demo data labels are explicit',!!$('healthNote') || !!document.querySelector('[data-i18n="healthNote"]'),'UI contains a disclaimer that demo values are not measurements.');
+  add('No identity recognition by default',document.body.innerText.toLowerCase().includes('身份识别')||document.body.innerText.toLowerCase().includes('identities')||document.body.innerText.toLowerCase().includes('신원'),'Face feature is described as detection-only, not identification.');
+  add('Edge endpoint is local-only by default',EDGE_BASE.includes('127.0.0.1'),'Frontend targets a loopback Edge API endpoint.');
+  add('Cross-check sample: unit present',/mmHg|°C|bpm|%/.test('118/76 mmHg 36.5 °C 72 bpm 98%'),'Demo schema example contains explicit units.');
+  add('Failure path is visible',typeof fetch==='function','Browser fetch API is available; Edge availability is checked separately.');
+  renderQa(results);
+  toast(results.every(x=>x.ok)?'QA checks passed. This is prototype-level validation only.':'Some checks failed; inspect the results.');
+});
+$('checkEdgeBtn')?.addEventListener('click',async()=>{
+  $('edgeSummary').textContent='…';
+  try{const r=await fetch(EDGE_BASE+'/api/v1/health',{method:'GET'});if(!r.ok)throw new Error('HTTP '+r.status);const data=await r.json();$('edgeSummary').textContent=tr('edgeOnline');$('edgeSub').textContent='API '+(data.version||'unknown');toast('Edge API reachable');}
+  catch(e){$('edgeSummary').textContent=tr('edgeOffline');$('edgeSub').textContent='127.0.0.1:8765';toast('Edge API not reachable. Start edge_server.py and retry.');}
+});
+$('sendEdgeBtn')?.addEventListener('click',async()=>{
+  const payload={device_id:'demo-watch-001',source:'SIMULATED_DEMO',measured_at:new Date().toISOString(),measurements:[
+    {type:'blood_pressure',systolic_mmhg:118,diastolic_mmhg:76,unit:'mmHg',quality:'demo'},
+    {type:'temperature',value:36.5,unit:'degC',temperature_kind:'skin_or_device_reported',quality:'demo'},
+    {type:'heart_rate',value:72,unit:'bpm',quality:'demo'},
+    {type:'spo2',value:98,unit:'percent',quality:'demo'}
+  ]};
+  $('transferSummary').textContent='…';
+  try{
+    const r=await fetch(EDGE_BASE+'/api/v1/vitals',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+    const data=await r.json();
+    if(!r.ok)throw new Error(data.detail||('HTTP '+r.status));
+    $('transferSummary').textContent=tr('transferOk');$('transferSub').textContent=(data.accepted_count||0)+' records · '+new Date().toLocaleTimeString();
+    toast(tr('sampleDataSent'));
+  }catch(e){$('transferSummary').textContent=tr('transferFail');$('transferSub').textContent='Start local Edge API · 127.0.0.1:8765';toast('Transfer failed: Edge API is not running or rejected the payload. No data was confirmed delivered.');}
+});
+
+
+
+setLang('zh');
+</script>
+
+<style>
+#pwa-install{position:fixed;z-index:99999;right:16px;bottom:16px;display:none;align-items:center;gap:10px;max-width:calc(100vw - 32px);padding:12px 14px;border:1px solid #2b596c;border-radius:14px;background:#0b2030;color:#eef8ff;box-shadow:0 12px 34px #0005;font:13px system-ui}
+#pwa-install button{border:0;border-radius:8px;padding:9px 12px;background:#54d8c0;color:#06202b;font-weight:800}
+#pwa-install .close{background:transparent;color:#9bb7c7}
+@media(max-width:520px){#pwa-install{left:12px;right:12px;bottom:12px}}
+</style>
+<div id="pwa-install"><div style="flex:1"><b>AI Industrial Safety</b><br><span id="pwa-hint">Install this app on your device.</span></div><button id="pwa-action">Install</button><button class="close" id="pwa-close">×</button></div>
+<script>
+(()=>{const box=document.getElementById('pwa-install'),btn=document.getElementById('pwa-action'),hint=document.getElementById('pwa-hint');if(!box||matchMedia('(display-mode:standalone)').matches||navigator.standalone)return;let promptEvent=null;const ios=/iphone|ipad|ipod/i.test(navigator.userAgent),l=(document.documentElement.lang||navigator.language||'en').toLowerCase();const zh=l.startsWith('zh'),ko=l.startsWith('ko');hint.textContent=ios?(zh?'点击分享按钮，然后选择“添加到主屏幕”。':ko?'공유 버튼을 누른 뒤 “홈 화면에 추가”를 선택하세요.':'Tap Share, then choose “Add to Home Screen”.'):(zh?'将应用安装到设备主屏幕。':ko?'기기에 앱을 설치하세요.':'Install this app on your device.');btn.textContent=zh?'安装':ko?'설치':'Install';addEventListener('beforeinstallprompt',e=>{e.preventDefault();promptEvent=e;box.style.display='flex'});if(ios)box.style.display='flex';btn.onclick=async()=>{if(promptEvent){promptEvent.prompt();await promptEvent.userChoice;promptEvent=null;box.style.display='none'}};document.getElementById('pwa-close').onclick=()=>box.remove()})();
+</script>
+
+<script>
+if ('serviceWorker' in navigator && (location.protocol==='https:' || location.hostname==='localhost')) {
+ addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js').catch(console.warn));
+}
+</script>
+
+</body></html>
