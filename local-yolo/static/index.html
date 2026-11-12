@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#101827">
+  <title>AI Industrial Safety · Local YOLO Test</title>
+  <style>
+    :root{color-scheme:dark;--bg:#0b1220;--panel:#121d2e;--line:#26364d;--text:#edf4ff;--muted:#9fb0c7;--accent:#38bdf8;--good:#34d399;--warn:#fbbf24}
+    *{box-sizing:border-box}body{margin:0;background:linear-gradient(135deg,#0b1220,#14243a);color:var(--text);font:15px/1.5 system-ui,Segoe UI,sans-serif}
+    main{max-width:1100px;margin:auto;padding:28px 18px 50px}header{display:flex;justify-content:space-between;gap:16px;align-items:center;flex-wrap:wrap}
+    h1{font-size:clamp(24px,4vw,36px);margin:0}p{color:var(--muted)}.tag{border:1px solid var(--line);border-radius:999px;padding:7px 12px;color:var(--accent);font-size:13px}
+    .grid{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(260px,.8fr);gap:18px;margin-top:22px}
+    .panel{background:rgba(18,29,46,.94);border:1px solid var(--line);border-radius:18px;padding:18px;min-width:0}
+    .stage{position:relative;background:#050a12;border-radius:12px;overflow:hidden;aspect-ratio:16/9;display:grid;place-items:center}
+    video,canvas{position:absolute;width:100%;height:100%;object-fit:contain}video{opacity:0}canvas{inset:0}
+    .empty{color:var(--muted);text-align:center;padding:20px}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+    button{border:0;border-radius:10px;padding:11px 16px;font-weight:700;cursor:pointer;background:var(--accent);color:#07111f}button.secondary{background:#26364d;color:var(--text)}button:disabled{opacity:.45;cursor:not-allowed}
+    .status{padding:12px;border-radius:10px;background:#0b1422;color:var(--muted);margin:12px 0}.status.good{color:var(--good)}.status.warn{color:var(--warn)}
+    .metric{display:flex;justify-content:space-between;border-bottom:1px solid var(--line);padding:10px 0;gap:12px}.metric:last-child{border:0}
+    #detections{max-height:280px;overflow:auto}.detection{padding:9px 10px;margin:7px 0;background:#0b1422;border-radius:9px;display:flex;justify-content:space-between}
+    .notice{font-size:13px;border-left:3px solid var(--warn);padding:10px 12px;background:#211d12;color:#f8df9b;border-radius:6px}
+    @media(max-width:760px){.grid{grid-template-columns:1fr}main{padding:20px 12px}}
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <div><h1>AI Industrial Safety</h1><p>本地摄像头 · CPU YOLO 实时检测测试台</p></div>
+    <span class="tag">LOCAL EDGE · PROTOTYPE</span>
+  </header>
+  <div class="grid">
+    <section class="panel">
+      <h2>摄像头画面 / Camera</h2>
+      <div class="stage">
+        <video id="video" autoplay muted playsinline></video>
+        <canvas id="canvas"></canvas>
+        <div class="empty" id="placeholder">点击“启动摄像头”开始测试</div>
+      </div>
+      <div class="actions">
+        <button id="start">启动摄像头</button>
+        <button id="stop" class="secondary" disabled>停止</button>
+        <button id="snapshot" class="secondary" disabled>保存当前画面</button>
+      </div>
+      <div class="status" id="status">正在检查本地检测服务…</div>
+      <div class="notice">安全提示：未配置自定义 PPE 模型时，系统仅运行通用演示检测。它不能判断安全帽或反光背心合规，也不能用于真实现场安全决策。</div>
+    </section>
+    <aside class="panel">
+      <h2>检测状态 / Detection</h2>
+      <div class="metric"><span>模型模式</span><strong id="model">检查中</strong></div>
+      <div class="metric"><span>检测数量</span><strong id="count">0</strong></div>
+      <div class="metric"><span>处理状态</span><strong id="fps">待机</strong></div>
+      <h3>识别结果</h3>
+      <div id="detections"><p>暂无检测结果</p></div>
+    </aside>
+  </div>
+</main>
+<script>
+const video=document.querySelector('#video'), canvas=document.querySelector('#canvas'), ctx=canvas.getContext('2d');
+const statusEl=document.querySelector('#status'), placeholder=document.querySelector('#placeholder');
+const startBtn=document.querySelector('#start'), stopBtn=document.querySelector('#stop'), snapBtn=document.querySelector('#snapshot');
+const modelEl=document.querySelector('#model'), countEl=document.querySelector('#count'), fpsEl=document.querySelector('#fps'), listEl=document.querySelector('#detections');
+let stream=null, timer=null, busy=false, lastDetections=[];
+function status(text,kind=''){statusEl.textContent=text;statusEl.className='status '+kind;}
+async function checkHealth(){
+  try{const r=await fetch('/api/health');const d=await r.json();modelEl.textContent=d.custom_model_found?'自定义 PPE':'通用演示';status(d.message,d.custom_model_found?'good':'warn');}
+  catch(e){status('无法连接本地检测服务，请重新启动程序。','warn');}
+}
+function draw(detections,w,h){
+  const rect=video.getBoundingClientRect();const scale=Math.min(rect.width/w,rect.height/h);
+  const dw=w*scale,dh=h*scale,ox=(rect.width-dw)/2,oy=(rect.height-dh)/2;
+  canvas.width=Math.round(rect.width*devicePixelRatio);canvas.height=Math.round(rect.height*devicePixelRatio);
+  canvas.style.width=rect.width+'px';canvas.style.height=rect.height+'px';
+  ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);ctx.clearRect(0,0,rect.width,rect.height);
+  ctx.font='bold 13px system-ui';ctx.lineWidth=2;
+  for(const d of detections){
+    const [x1,y1,x2,y2]=d.box.map(v=>v*scale);
+    ctx.strokeStyle='#34d399';ctx.fillStyle='#34d399';ctx.strokeRect(ox+x1,oy+y1,x2-x1,y2-y1);
+    const label=d.label+' '+Math.round(d.confidence*100)+'%';const tw=ctx.measureText(label).width+12;
+    ctx.fillRect(ox+x1,Math.max(oy,oy+y1-23),tw,22);ctx.fillStyle='#07111f';ctx.fillText(label,ox+x1+6,Math.max(oy+15,oy+y1-7));
+  }
+}
+async function detectFrame(){
+  if(!stream||busy||video.readyState<2)return;busy=true;
+  try{
+    const w=Math.min(video.videoWidth,960),h=Math.round(video.videoHeight*w/video.videoWidth);
+    const temp=document.createElement('canvas');temp.width=w;temp.height=h;temp.getContext('2d').drawImage(video,0,0,w,h);
+    const r=await fetch('/api/detect',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({image:temp.toDataURL('image/jpeg',.72)})});
+    if(!r.ok)throw new Error((await r.json()).detail||'检测请求失败');
+    const d=await r.json();lastDetections=d.detections;draw(d.detections,d.image_width,d.image_height);
+    countEl.textContent=d.detections.length;fpsEl.textContent='运行中';
+    listEl.innerHTML=d.detections.length?d.detections.map(x=>'<div class="detection"><span>'+escapeHtml(x.label)+'</span><strong>'+Math.round(x.confidence*100)+'%</strong></div>').join(''):'<p>当前画面未发现目标</p>';
+    status(d.warning,d.model_mode==='custom-ppe'?'good':'warn');
+  }catch(e){status(e.message,'warn');fpsEl.textContent='错误';}
+  finally{busy=false;}
+}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+startBtn.onclick=async()=>{
+  try{stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment',width:{ideal:1280},height:{ideal:720}},audio:false});video.srcObject=stream;await video.play();placeholder.hidden=true;startBtn.disabled=true;stopBtn.disabled=false;snapBtn.disabled=false;fpsEl.textContent='启动中';timer=setInterval(detectFrame,650);}
+  catch(e){status('摄像头启动失败：'+e.message,'warn');}
+};
+function stop(){if(timer)clearInterval(timer);timer=null;if(stream)stream.getTracks().forEach(t=>t.stop());stream=null;video.srcObject=null;startBtn.disabled=false;stopBtn.disabled=true;snapBtn.disabled=true;fpsEl.textContent='待机';ctx.clearRect(0,0,canvas.width,canvas.height);placeholder.hidden=false;}
+stopBtn.onclick=stop;
+snapBtn.onclick=()=>{const a=document.createElement('a');a.download='industrial-safety-test.jpg';a.href=canvas.toDataURL('image/jpeg');a.click();};
+window.addEventListener('beforeunload',stop);checkHealth();
+</script>
+</body>
+</html>
