@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#102d4d">
+<title>双摄像头 AI 人体识别｜AI Industrial Safety</title>
+<style>
+:root{--navy:#102d4d;--blue:#1677ff;--bg:#f3f7fc;--line:#e3ebf5;--muted:#69809a;--green:#16a66a;--red:#e84949}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#17324f;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans SC",sans-serif}
+header{background:linear-gradient(100deg,#102d4d,#173c63);color:#fff;padding:16px 22px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+header strong{font-size:18px}header small{display:block;color:#c4d9ee;margin-top:4px}
+a{color:#dcecff;text-decoration:none}.wrap{max-width:1440px;margin:auto;padding:20px}
+.intro{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;margin-bottom:16px}
+.intro h1{font-size:23px;margin:0 0 5px}.intro p{color:var(--muted);margin:0;font-size:13px}
+.status{padding:8px 12px;border-radius:20px;background:#e7f8ef;color:#08794a;font-size:12px;font-weight:800}
+.toolbar{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:14px}
+button,select{font:inherit;border:0;border-radius:9px;padding:10px 13px;font-weight:700}
+button{cursor:pointer}.primary{background:var(--blue);color:#fff}.subtle{background:#eaf2fc;color:#244c78}.danger{background:#fff0f0;color:#d43e3e}
+button:disabled{opacity:.45;cursor:not-allowed}
+.cameras{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.panel{background:#fff;border:1px solid var(--line);border-radius:15px;overflow:hidden;box-shadow:0 5px 22px #1a47730b;min-width:0}
+.panel-head{padding:13px 15px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.panel-head strong{font-size:15px}.state{font-size:11px;color:var(--muted)}
+.stage{position:relative;background:#071a2b;aspect-ratio:16/9;display:grid;place-items:center;overflow:hidden}
+video{width:100%;height:100%;object-fit:contain;position:absolute;inset:0;background:#071a2b}
+canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.placeholder{z-index:1;text-align:center;color:#dcecff;font-size:13px;line-height:1.8;padding:20px}
+.controls{padding:13px;display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:8px}
+select{min-width:0;width:100%;background:#f3f7fc;border:1px solid var(--line);color:#244c78}
+.metrics{display:flex;gap:10px;flex-wrap:wrap;padding:0 14px 14px}
+.metric{background:#f7faff;border:1px solid var(--line);border-radius:10px;padding:9px 12px;min-width:100px}
+.metric small{display:block;color:var(--muted);font-size:11px}.metric b{font-size:20px;display:block;margin-top:3px}
+.notice{margin-top:15px;padding:13px 15px;border:1px solid #f1dfb8;background:#fff9ec;border-radius:11px;color:#77551b;font-size:12px;line-height:1.65}
+.foot{margin-top:12px;color:var(--muted);font-size:11px;line-height:1.6}
+@media(max-width:760px){.wrap{padding:12px}.cameras{grid-template-columns:1fr}.intro h1{font-size:19px}.controls{grid-template-columns:1fr 1fr}.controls select{grid-column:1/-1}}
+</style>
+</head>
+<body>
+<header><div><strong>AI Industrial Safety · 双摄像头监控</strong><small>Dual Camera Live View · On-device Person Detection</small></div><a href="./index.html">← 返回系统首页</a></header>
+<main class="wrap">
+ <div class="intro"><div><h1>左右双摄像头 · AI 人体识别</h1><p>同时打开两个摄像头，实时检测画面中的 person 并显示边界框与人数</p></div><div class="status" id="modelStatus">AI 模型尚未加载</div></div>
+ <div class="toolbar"><button class="primary" id="startAll">▶ 启动两个摄像头</button><button class="danger" id="stopAll">■ 停止全部</button><button class="subtle" id="reloadDevices">↻ 刷新摄像头列表</button></div>
+ <section class="cameras">
+  <article class="panel" data-cam="0"><div class="panel-head"><strong>📹 摄像头 01 · 左侧</strong><span class="state" id="state0">未启动</span></div><div class="stage"><video id="video0" autoplay muted playsinline></video><canvas id="canvas0"></canvas><div class="placeholder" id="placeholder0">摄像头 01<br>选择设备并点击“启动”</div></div><div class="controls"><select id="device0" aria-label="左侧摄像头"></select><button class="primary startOne">启动</button><button class="danger stopOne" disabled>停止</button></div><div class="metrics"><div class="metric"><small>识别人数</small><b id="count0">0</b></div><div class="metric"><small>识别状态</small><b id="detect0" style="font-size:13px">待机</b></div></div></article>
+  <article class="panel" data-cam="1"><div class="panel-head"><strong>📹 摄像头 02 · 右侧</strong><span class="state" id="state1">未启动</span></div><div class="stage"><video id="video1" autoplay muted playsinline></video><canvas id="canvas1"></canvas><div class="placeholder" id="placeholder1">摄像头 02<br>选择设备并点击“启动”</div></div><div class="controls"><select id="device1" aria-label="右侧摄像头"></select><button class="primary startOne">启动</button><button class="danger stopOne" disabled>停止</button></div><div class="metrics"><div class="metric"><small>识别人数</small><b id="count1">0</b></div><div class="metric"><small>识别状态</small><b id="detect1" style="font-size:13px">待机</b></div></div></article>
+ </section>
+ <div class="notice"><b>使用说明：</b>首次使用需允许浏览器访问摄像头。网站使用 HTTPS，可在 Chrome / Edge 中运行。首次加载会从 CDN 下载 COCO-SSD 人体检测模型；检测在当前设备浏览器本地执行，视频不会上传到本网站。双摄像头能否同时启动取决于电脑/手机硬件、浏览器及摄像头驱动；部分手机不支持同时打开前后摄像头。</div>
+ <p class="foot">当前版本提供通用人体（Person）检测，不等于安全帽/反光衣 PPE 专用识别，也不包含跨摄像头身份追踪。若要接入工厂 IP 摄像头/NVR，需要提供 RTSP/WebRTC 视频网关或边缘 AI 服务，不能仅靠网页直接读取任意监控设备。</p>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.17.0/dist/tf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd@2.2.3/dist/coco-ssd.min.js"></script>
+<script>
+(()=>{
+ const modelStatus=document.getElementById('modelStatus');
+ const cams=[0,1].map(i=>({i,stream:null,active:false,loop:0,last:0,model:null}));
+ let sharedModel=null,modelPromise=null;
+ const $=id=>document.getElementById(id);
+ function loadModel(){
+   if(sharedModel)return Promise.resolve(sharedModel);
+   if(!modelPromise){
+     modelStatus.textContent='正在加载人体识别模型…';
+     modelPromise=cocoSsd.load({base:'lite_mobilenet_v2'}).then(m=>{sharedModel=m;modelStatus.textContent='AI 人体识别模型已就绪';return m;}).catch(e=>{modelStatus.textContent='模型加载失败，请检查网络后刷新';modelPromise=null;throw e;});
+   }
+   return modelPromise;
+ }
+ async function refreshDevices(){
+   const devices=await navigator.mediaDevices.enumerateDevices();
+   const camsList=devices.filter(d=>d.kind==='videoinput');
+   [0,1].forEach(i=>{
+     const sel=$('device'+i),old=sel.value;sel.innerHTML='';
+     if(!camsList.length){const o=document.createElement('option');o.textContent='未发现摄像头';o.value='';sel.append(o);return;}
+     camsList.forEach((d,n)=>{const o=document.createElement('option');o.value=d.deviceId;o.textContent=d.label||('摄像头 '+(n+1));sel.append(o);});
+     if(old&&camsList.some(d=>d.deviceId===old))sel.value=old;
+     else if(camsList[i])sel.value=camsList[i].deviceId;
+     else sel.selectedIndex=0;
+   });
+ }
+ async function start(i){
+   const c=cams[i];if(c.active)return;
+   try{
+     await loadModel();
+     const deviceId=$('device'+i).value;
+     const constraints={audio:false,video:deviceId?{deviceId:{exact:deviceId},width:{ideal:1280},height:{ideal:720}}:{facingMode:'environment',width:{ideal:1280},height:{ideal:720}}};
+     c.stream=await navigator.mediaDevices.getUserMedia(constraints);
+     const video=$('video'+i);video.srcObject=c.stream;await video.play();
+     c.active=true;$('placeholder'+i).style.display='none';$('state'+i).textContent='● 摄像头已连接';$('state'+i).style.color='#16a66a';
+     document.querySelectorAll('[data-cam="'+i+'"] .startOne')[0].disabled=true;
+     document.querySelectorAll('[data-cam="'+i+'"] .stopOne')[0].disabled=false;
+     $('detect'+i).textContent='识别中';c.loop=requestAnimationFrame(()=>detect(i));
+   }catch(e){$('state'+i).textContent='启动失败';$('detect'+i).textContent=e.name==='NotAllowedError'?'权限被拒绝':'设备不可用';alert('摄像头 '+(i+1)+' 启动失败：'+(e.message||e.name)+'。请检查浏览器摄像头权限，或选择其他设备。');}
+ }
+ async function detect(i){
+   const c=cams[i],video=$('video'+i),canvas=$('canvas'+i),ctx=canvas.getContext('2d');
+   if(!c.active)return;
+   if(video.readyState>=2&&performance.now()-c.last>180){
+     c.last=performance.now();
+     try{
+       const predictions=await sharedModel.detect(video);
+       if(!c.active)return;
+       const w=video.videoWidth,h=video.videoHeight;
+       if(w&&h){
+         if(canvas.width!==w||canvas.height!==h){canvas.width=w;canvas.height=h;}
+         ctx.clearRect(0,0,w,h);
+         const people=predictions.filter(p=>p.class==='person'&&p.score>=0.45);
+         $('count'+i).textContent=people.length;
+         people.forEach(p=>{
+           const [x,y,bw,bh]=p.bbox;
+           ctx.lineWidth=Math.max(2,w/500);ctx.strokeStyle='#25e58b';ctx.fillStyle='#25e58b';
+           ctx.strokeRect(x,y,bw,bh);
+           const label='PERSON '+Math.round(p.score*100)+'%';
+           ctx.font='bold '+Math.max(13,w/65)+'px Arial';
+           const th=Math.max(23,w/35),tw=ctx.measureText(label).width+14;
+           ctx.fillRect(x,Math.max(0,y-th),tw,th);
+           ctx.fillStyle='#062b1c';ctx.fillText(label,x+7,Math.max(16,y-7));
+         });
+       }
+     }catch(e){$('detect'+i).textContent='检测异常';}
+   }
+   if(c.active)c.loop=requestAnimationFrame(()=>detect(i));
+ }
+ function stop(i){
+   const c=cams[i];c.active=false;cancelAnimationFrame(c.loop);
+   if(c.stream){c.stream.getTracks().forEach(t=>t.stop());c.stream=null;}
+   $('video'+i).srcObject=null;const canvas=$('canvas'+i);canvas.getContext('2d').clearRect(0,0,canvas.width,canvas.height);
+   $('placeholder'+i).style.display='block';$('state'+i).textContent='已停止';$('state'+i).style.color='';$('count'+i).textContent='0';$('detect'+i).textContent='待机';
+   document.querySelectorAll('[data-cam="'+i+'"] .startOne')[0].disabled=false;
+   document.querySelectorAll('[data-cam="'+i+'"] .stopOne')[0].disabled=true;
+ }
+ document.querySelectorAll('.panel').forEach(panel=>{
+   const i=Number(panel.dataset.cam);
+   panel.querySelector('.startOne').addEventListener('click',()=>start(i));
+   panel.querySelector('.stopOne').addEventListener('click',()=>stop(i));
+ });
+ $('startAll').addEventListener('click',async()=>{await loadModel();await Promise.all([start(0),start(1)]);});
+ $('stopAll').addEventListener('click',()=>{stop(0);stop(1);});
+ $('reloadDevices').addEventListener('click',refreshDevices);
+ if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){modelStatus.textContent='当前浏览器不支持摄像头访问';}
+ else{refreshDevices().catch(()=>{});navigator.mediaDevices.addEventListener?.('devicechange',refreshDevices);}
+ window.addEventListener('beforeunload',()=>{cams.forEach(c=>{if(c.stream)c.stream.getTracks().forEach(t=>t.stop());});});
+})();
+</script>
+</body></html>
