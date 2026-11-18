@@ -16,7 +16,9 @@ This folder runs a local FastAPI + Ultralytics YOLO prototype. It is intentional
 3. Double-click `start_windows.bat`.
 4. Wait for dependencies to install on first launch.
 5. Open http://127.0.0.1:8000 if the browser does not open automatically.
-6. Allow camera access in the browser.\n\nFor the new **two-camera YOLO dashboard**, open `http://127.0.0.1:8000/dual` after the server starts. Select the left and right cameras, then click **启动两个摄像头**. Each camera sends sampled frames to the local FastAPI YOLO service.
+6. Allow camera access in the browser.
+
+For the **two-camera YOLO dashboard**, open `http://127.0.0.1:8000/dual` after the server starts. Select the left and right cameras, then click **启动两个摄像头**. Each camera sends sampled frames to the local FastAPI YOLO service.
 
 The first launch downloads the small `yolov8n.pt` fallback model. CPU inference may be slow.
 
