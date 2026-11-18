@@ -50,7 +50,7 @@ def home() -> FileResponse:
     return FileResponse(ROOT / "static" / "index.html")
 
 
-@app.get("/api/health")
+@app.get("/dual")\ndef dual_camera() -> FileResponse:\n    return FileResponse(ROOT / "static" / "dual.html")\n\n\n@app.get("/api/health")
 def health() -> dict[str, Any]:
     custom_exists = MODEL_PATH.exists()
     return {
