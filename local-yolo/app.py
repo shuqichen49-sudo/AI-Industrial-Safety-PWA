@@ -19,7 +19,7 @@ MODEL_PATH = Path(os.getenv("PPE_MODEL_PATH", str(ROOT / "models" / "best.pt")))
 FALLBACK_MODEL = os.getenv("YOLO_FALLBACK_MODEL", "yolov8n.pt")
 CONFIDENCE = float(os.getenv("YOLO_CONFIDENCE", "0.35"))
 
-app = FastAPI(title="AI Industrial Safety - Local YOLO", version="0.1.0")
+app = FastAPI(title="AI Industrial Safety - Local YOLO", version="0.1.1")
 app.mount("/static", StaticFiles(directory=ROOT / "static"), name="static")
 
 _model: YOLO | None = None
@@ -50,7 +50,12 @@ def home() -> FileResponse:
     return FileResponse(ROOT / "static" / "index.html")
 
 
-@app.get("/dual")\ndef dual_camera() -> FileResponse:\n    return FileResponse(ROOT / "static" / "dual.html")\n\n\n@app.get("/api/health")
+@app.get("/dual")
+def dual_camera() -> FileResponse:
+    return FileResponse(ROOT / "static" / "dual.html")
+
+
+@app.get("/api/health")
 def health() -> dict[str, Any]:
     custom_exists = MODEL_PATH.exists()
     return {
